@@ -3,7 +3,7 @@ import { Persons } from './components/Persons'
 import { useState } from 'react';
 
 function App() {
-
+  const [searchTerm, setSearchTerm] = useState("");
   const [ persons, setPersons ] = useState([
     {
       id: 1,
@@ -25,10 +25,20 @@ function App() {
     },
   ]);
 
+  const handleSearchChange = (e) => {
+    setSearchTerm(e.target.value);
+  }
+
+  const filteredPersons = persons.filter(person => 
+    person.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
+    person.role.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   return (
     <div className='App'>
       <div className='container'>
-        <Persons persons={persons} setPersons={setPersons} />
+        <input className="form-control mb-4" type="text" value={searchTerm} onChange={handleSearchChange} placeholder="Buscar por nombre o rol" />
+        <Persons persons={filteredPersons} setPersons={setPersons} />
       </div>
     </div>
   );
